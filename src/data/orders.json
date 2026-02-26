@@ -1,0 +1,10 @@
+[
+  {
+    "code": "DRUIDA-DEMO",
+    "purchaseDate": "2024-01-01T00:00:00.000Z",
+    "credits": 5,
+    "status": "ACTIVE",
+    "paymentId": "demo_payment_id",
+    "generations": []
+  }
+]
