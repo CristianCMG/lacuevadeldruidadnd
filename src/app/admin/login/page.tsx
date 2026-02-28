@@ -33,7 +33,7 @@ function LoginForm() {
   };
 
   useEffect(() => {
-    const secretParam = searchParams.get('secret');
+    const secretParam = searchParams?.get('secret');
     if (secretParam) {
       setSecret(secretParam);
       verifySecret(secretParam);
@@ -82,7 +82,7 @@ function LoginForm() {
 export default function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-      <Suspense fallback={<div className="text-center"><Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" /></div>}>
+      <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
         <LoginForm />
       </Suspense>
     </div>
