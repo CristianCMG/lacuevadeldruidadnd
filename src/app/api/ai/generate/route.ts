@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       id: uuidv4(),
       prompt,
       imageUrl: image,
-      modelUrl: output as string, // Assuming output is the GLB URL
+      modelUrl: String(output), // Assuming output is the GLB URL
       createdAt: new Date().toISOString(),
       status: 'PENDING' as const,
     };
