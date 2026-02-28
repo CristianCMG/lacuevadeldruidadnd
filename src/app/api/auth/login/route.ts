@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getAuthURL } from '@/lib/mercadolibre';
+import { meliClient } from '@/lib/mercadolibre';
 
 export async function GET() {
-  const { url, codeVerifier } = getAuthURL();
+  const { url, codeVerifier } = meliClient.getAuthURL();
 
   const response = NextResponse.redirect(url);
 

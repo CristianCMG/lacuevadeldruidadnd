@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { exchangeCodeForToken } from '@/lib/mercadolibre';
+import { meliClient } from '@/lib/mercadolibre';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const data = await exchangeCodeForToken(code, codeVerifier);
+    const data = await meliClient.exchangeCodeForToken(code, codeVerifier);
     
     // Create a response to clear the cookie
     const response = NextResponse.json({

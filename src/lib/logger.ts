@@ -1,5 +1,5 @@
-
 import { v4 as uuidv4 } from 'uuid';
+import { ILogger } from './interfaces';
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
@@ -11,7 +11,7 @@ interface LogEntry {
   correlationId?: string;
 }
 
-class Logger {
+export class Logger implements ILogger {
   private correlationId?: string;
 
   constructor(correlationId?: string) {

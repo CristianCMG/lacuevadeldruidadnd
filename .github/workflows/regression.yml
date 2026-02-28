@@ -1,0 +1,36 @@
+name: Nightly Regression
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Every night at midnight
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Run Full Regression Pack (Live)
+      run: npx playwright test
+      env:
+        BASE_URL: https://lacuevadeldruidadnd.com
+        CI: true
+
+    - name: Run Accessibility Audit (Live)
+      run: npx playwright test tests/accessibility.spec.ts
+      env:
+        BASE_URL: https://lacuevadeldruidadnd.com

@@ -47,12 +47,16 @@ export default function Navbar() {
 
             {/* Icons */}
             <div className="hidden md:flex items-center space-x-4">
-              <button className="text-gray-300 hover:text-white p-2 rounded-full hover:bg-gray-800 transition-colors">
+              <button 
+                className="text-gray-300 hover:text-white p-2 rounded-full hover:bg-gray-800 transition-colors"
+                aria-label="Buscar"
+              >
                 <Search className="h-5 w-5" />
               </button>
               <button 
                 onClick={toggleCart}
                 className="text-gray-300 hover:text-white p-2 rounded-full hover:bg-gray-800 transition-colors relative"
+                aria-label="Carrito de compras"
               >
                 <ShoppingCart className="h-5 w-5" />
                 {mounted && items.length > 0 && (
@@ -65,7 +69,10 @@ export default function Navbar() {
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
-              <button className="text-gray-300 hover:text-white p-2">
+              <button 
+                className="text-gray-300 hover:text-white p-2"
+                aria-label="Menú principal"
+              >
                 <Menu className="h-6 w-6" />
               </button>
             </div>

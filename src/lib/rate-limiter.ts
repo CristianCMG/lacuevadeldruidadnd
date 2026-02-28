@@ -1,12 +1,13 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { logger } from './logger';
+import { IRateLimiter } from './interfaces';
 
 interface RateLimiterConfig {
   maxRetries?: number;
   baseDelay?: number;
 }
 
-export class RateLimiter {
+export class RateLimiter implements IRateLimiter {
   private client: AxiosInstance;
   private maxRetries: number;
   private baseDelay: number;
