@@ -50,6 +50,7 @@ export const useCart = create<CartStore>()(
     }),
     {
       name: 'druida-cart-storage',
+      partialize: (state) => ({ items: state.items }), // Only persist items, not UI state like isOpen
     }
   )
 );
