@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest",
-    "lint": "eslint"
+    "lint": "eslint",
+    "package:hostinger": "powershell -ExecutionPolicy Bypass -File scripts/package-for-hostinger.ps1"
   },
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
@@ -22,24 +23,24 @@
     "replicate": "^1.4.0",
     "tailwind-merge": "^3.5.0",
     "uuid": "^13.0.0",
-    "zustand": "^5.0.11"
-  },
-  "devDependencies": {
+    "zustand": "^5.0.11",
     "@tailwindcss/postcss": "^4",
-    "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^5.1.4",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
     "happy-dom": "^20.7.0",
     "jsdom": "^28.1.0",
     "ngrok": "^5.0.0-beta.2",
-    "tailwindcss": "^4",
-    "typescript": "^5",
     "vitest": "^4.0.18"
   }
 }
