@@ -39,6 +39,13 @@ function LoginForm() {
         body: JSON.stringify({ secret: secretValue }),
       });
 
+      // Handle 503 Service Unavailable explicitly
+      if (res.status === 503) {
+        setError('Server is starting up or unavailable (503). Please wait a moment and try again.');
+        setLoading(false);
+        return;
+      }
+
       if (res.ok) {
         router.push('/admin/dashboard');
       } else {
