@@ -23,9 +23,9 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Packaging build artifacts..."
 
 # Copy essential files for PRODUCTION runtime
-# Include: build, public, package.json, server.js, config files
+# Include: .next, public, package.json, server.js, config files
 $itemsToCopy = @(
-    "build",
+    ".next",
     "public",
     "package.json",
     "package-lock.json",
@@ -50,8 +50,12 @@ if (Test-Path "src/data") {
 }
 
 # Create Zip file
+Write-Host "Waiting for file handles to release..."
+Start-Sleep -Seconds 2
+
 Write-Host "Creating zip archive: $zipFile"
-Compress-Archive -Path "$deployDir\*" -DestinationPath $zipFile
+if (Test-Path $zipFile) { Remove-Item -Force $zipFile }
+Compress-Archive -Path "$deployDir\*" -DestinationPath $zipFile -Force
 
 # Clean up
 Remove-Item -Recurse -Force $deployDir

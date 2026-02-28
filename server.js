@@ -11,9 +11,6 @@ const app = next({
   dev, 
   hostname, 
   port,
-  conf: {
-    distDir: 'build'
-  }
 });
 const handle = app.getRequestHandler();
 

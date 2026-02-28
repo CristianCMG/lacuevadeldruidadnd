@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  distDir: 'build', // Output to 'build' instead of '.next' to avoid dotfile issues on some hosting providers
   // Optimize for limited resource environments (Hostinger Shared/Cloud)
   poweredByHeader: false,
   compress: false, // Disable compression to save CPU (let Cloudflare/Hostinger handle it if possible)

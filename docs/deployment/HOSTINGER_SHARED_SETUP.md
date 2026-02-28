@@ -26,11 +26,11 @@ Si estás en Windows, puedes usar el script automatizado que hemos creado:
     ```bash
     npm run build
     ```
-    Esto creará una carpeta `build`.
+    Esto creará una carpeta `.next`.
 
 3.  **Preparar los archivos para subir**:
     Crea un archivo `.zip` que contenga **SOLO** los siguientes archivos y carpetas (dentro de `web`):
-    -   Carpeta `build` (con todo su contenido)
+    -   Carpeta `.next` (con todo su contenido)
     -   Carpeta `public`
     -   Carpeta `scripts`
     -   Archivo `package.json`

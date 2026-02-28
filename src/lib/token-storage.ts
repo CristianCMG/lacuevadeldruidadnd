@@ -15,7 +15,11 @@ export class TokenStorage implements ITokenStorage {
     try {
       // Ensure directory exists
       const dir = path.dirname(TOKENS_FILE);
-      await fs.mkdir(dir, { recursive: true });
+      try {
+        await fs.mkdir(dir, { recursive: true });
+      } catch {
+        // Ignore mkdir errors (e.g. if we don't have permission but directory exists, or file system is read-only)
+      }
       
       const json = JSON.stringify(tokens);
       const encrypted = SecurityUtils.encrypt(json, ENCRYPTION_KEY);

@@ -24,12 +24,14 @@ const DB_PATH = process.env.DATA_STORAGE_PATH
   : path.join(process.cwd(), process.env.NODE_ENV === 'production' ? 'data' : 'src/data', 'orders.json');
 
 // Ensure directory exists in production
-if (process.env.DATA_STORAGE_PATH && !fs.existsSync(process.env.DATA_STORAGE_PATH)) {
-  try {
+try {
+  if (process.env.DATA_STORAGE_PATH && !fs.existsSync(process.env.DATA_STORAGE_PATH)) {
     fs.mkdirSync(process.env.DATA_STORAGE_PATH, { recursive: true });
-  } catch (error) {
-    console.error('Failed to create storage directory:', error);
   }
+} catch (error) {
+  // Only log warning, don't crash the build if storage path is invalid or inaccessible
+  // This is common during build time or if env vars are placeholders
+  console.warn('Warning: Failed to create storage directory (DATA_STORAGE_PATH). Using in-memory or fallback might be necessary.', error);
 }
 
 // Initialize DB if not exists
