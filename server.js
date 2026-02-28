@@ -3,22 +3,28 @@ const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 
-// Force production environment if not set, as this script is typically used for the built artifact
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'production';
-}
+// Force production environment for Hostinger deployment
+// This ensures the server uses the built artifacts from 'npm run build'
+// instead of trying to compile on-the-fly (which fails on shared hosting).
+process.env.NODE_ENV = 'production';
 
-const dev = process.env.NODE_ENV !== 'production';
+const dev = false;
 const hostname = 'localhost';
 const port = process.env.PORT || 3000;
 
-console.log(`Starting server in ${dev ? 'development' : 'production'} mode`);
+console.log(`Starting server in PRODUCTION mode (Forced for Hostinger)`);
+console.log(`Working directory: ${process.cwd()}`);
 
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ 
   dev, 
   hostname, 
   port,
+  // explicit conf to avoid any dev defaults leaking
+  conf: {
+    dev,
+    reactStrictMode: true,
+  }
 });
 const handle = app.getRequestHandler();
 

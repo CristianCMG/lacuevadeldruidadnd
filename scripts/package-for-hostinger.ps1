@@ -29,6 +29,7 @@ $itemsToCopy = @(
     "postcss.config.mjs",
     "eslint.config.mjs",
     "server.js",
+    "tailwind.config.js",
     "README.md"
 )
 
