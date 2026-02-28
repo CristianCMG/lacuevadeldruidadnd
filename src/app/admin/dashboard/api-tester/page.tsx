@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { API_REGISTRY, ApiEndpoint } from '@/config/api-registry';
-import { Play, Loader2, Code, FileJson } from 'lucide-react';
+import { Play, Loader2, Code, FileJson, Server } from 'lucide-react';
 
 export default function ApiTesterPage() {
   const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint | null>(null);
