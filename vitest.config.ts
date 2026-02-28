@@ -5,16 +5,15 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'happy-dom',
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./tests/setup.ts'],
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
-    setupFiles: [],
-    globals: true,
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
     },
   },
 });
