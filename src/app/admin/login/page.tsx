@@ -43,7 +43,13 @@ function LoginForm() {
         router.push('/admin/dashboard');
       } else {
         const data = await res.json();
-        setError(data.error || 'Invalid secret');
+        const errorMessage = data.error || 'Invalid secret';
+        
+        if (errorMessage.includes('Server misconfiguration')) {
+          setError('Server Error: ADMIN_SECRET env var is missing. Please configure it in Hostinger panel.');
+        } else {
+          setError(errorMessage);
+        }
         setLoading(false);
       }
     } catch (err) {
