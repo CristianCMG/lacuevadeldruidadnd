@@ -33,8 +33,14 @@ export async function POST(request: Request) {
       return response;
     }
 
+    // Special check for common issues
+    let hint = "";
+    if (expected.length < 5 && received.length > 5) {
+      hint = " (Check if your secret contains special characters like '&' that might be cutting it off)";
+    }
+
     return NextResponse.json({ 
-      error: `Invalid credentials. Expected length: ${expected.length}, Received length: ${received.length}`,
+      error: `Invalid credentials. Expected length: ${expected.length}, Received length: ${received.length}${hint}`,
       debug: {
         expectedStart: expected.substring(0, 2) + '...',
         receivedStart: received.substring(0, 2) + '...'
