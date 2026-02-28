@@ -3,9 +3,17 @@ const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 
+// Force production environment if not set, as this script is typically used for the built artifact
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'production';
+}
+
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
 const port = process.env.PORT || 3000;
+
+console.log(`Starting server in ${dev ? 'development' : 'production'} mode`);
+
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ 
   dev, 
