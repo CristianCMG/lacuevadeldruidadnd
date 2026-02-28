@@ -19,7 +19,9 @@ export interface Order {
   generations: Generation[];
 }
 
-const DB_PATH = path.join(process.cwd(), 'src/data/orders.json');
+const DB_PATH = process.env.DATA_STORAGE_PATH 
+  ? path.join(process.env.DATA_STORAGE_PATH, 'orders.json')
+  : path.join(process.cwd(), 'src/data/orders.json');
 
 // Initialize DB if not exists
 if (!fs.existsSync(DB_PATH)) {

@@ -10,7 +10,9 @@ export interface HostingerConfig {
   auditLogPath: string;
 }
 
-const BASE_STORAGE_PATH = path.join(process.cwd(), 'src', 'data', 'secure');
+const BASE_STORAGE_PATH = process.env.DATA_STORAGE_PATH 
+  ? path.join(process.env.DATA_STORAGE_PATH, 'secure')
+  : path.join(process.cwd(), 'src', 'data', 'secure');
 
 export const getHostingerConfig = (): HostingerConfig => {
   const env = (process.env.NODE_ENV || 'development') as Environment;

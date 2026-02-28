@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getOrderByCode, updateOrder } from '@/lib/db';
 import { differenceInHours } from 'date-fns';
-import { MercadoPagoConfig, Payment } from 'mercadopago';
+import { MercadoPagoConfig, Payment, PaymentRefund } from 'mercadopago';
 
 // MP Client for Refunds
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN || '' });
-const payment = new Payment(client);
+const paymentRefund = new PaymentRefund(client);
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     // We wrap it in try/catch to simulate success if using mock data.
     try {
       if (order.paymentId && order.paymentId !== 'demo_payment_id') {
-        await payment.refund({ payment_id: order.paymentId });
+        await paymentRefund.create({ payment_id: order.paymentId });
       }
     } catch (mpError) {
       console.error('MercadoPago Refund Error:', mpError);
