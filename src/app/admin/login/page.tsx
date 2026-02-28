@@ -4,6 +4,25 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, Loader2 } from 'lucide-react';
 
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean, error: string }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: '' };
+  }
+
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error: error.toString() };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div className="p-4 text-red-500 bg-gray-800 rounded">Something went wrong: {this.state.error}</div>;
+    }
+    return this.props.children;
+  }
+}
+import React from 'react';
+
 function LoginForm() {
   const [secret, setSecret] = useState('');
   const [error, setError] = useState('');
@@ -23,11 +42,12 @@ function LoginForm() {
       if (res.ok) {
         router.push('/admin/dashboard');
       } else {
-        setError('Invalid secret');
+        const data = await res.json();
+        setError(data.error || 'Invalid secret');
         setLoading(false);
       }
     } catch (err) {
-      setError('Login failed');
+      setError('Login failed. Check server logs.');
       setLoading(false);
     }
   };
@@ -82,9 +102,11 @@ function LoginForm() {
 export default function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-      <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
-        <LoginForm />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+          <LoginForm />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }
