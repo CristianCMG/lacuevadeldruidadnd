@@ -1,12 +1,11 @@
+// Force production environment for Hostinger deployment
+// MUST BE SET BEFORE ANY IMPORTS to ensure Next.js loads in the correct mode
+process.env.NODE_ENV = 'production';
+
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
-
-// Force production environment for Hostinger deployment
-// This ensures the server uses the built artifacts from 'npm run build'
-// instead of trying to compile on-the-fly (which fails on shared hosting).
-process.env.NODE_ENV = 'production';
 
 const dev = false;
 const hostname = 'localhost';
