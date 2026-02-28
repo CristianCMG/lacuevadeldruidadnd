@@ -89,6 +89,7 @@ src/data/orders.json
 
 # Next.js build output
 .next
+build
 out
 
 # Nuxt.js build / generate output

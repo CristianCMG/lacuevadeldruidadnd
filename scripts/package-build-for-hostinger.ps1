@@ -23,9 +23,9 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Packaging build artifacts..."
 
 # Copy essential files for PRODUCTION runtime
-# Include: .next, public, package.json, server.js, config files
+# Include: build, public, package.json, server.js, config files
 $itemsToCopy = @(
-    ".next",
+    "build",
     "public",
     "package.json",
     "package-lock.json",
