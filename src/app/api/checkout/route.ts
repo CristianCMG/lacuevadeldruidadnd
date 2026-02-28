@@ -29,8 +29,13 @@ export async function POST(request: Request) {
       generations: [],
     };
 
-    createOrder(newOrder);
-    logger.info('Order created', { orderId, items });
+    try {
+      createOrder(newOrder);
+      logger.info('Order created', { orderId, items });
+    } catch (dbError) {
+      logger.error('Database Error during checkout', { error: dbError });
+      return Response.json({ error: 'Error interno al procesar la orden (DB)' }, { status: 500 });
+    }
 
     const preference = new Preference(client);
 

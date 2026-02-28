@@ -20,11 +20,17 @@ export default function CartDrawer() {
       });
       
       const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al iniciar el pago');
+      }
+
       if (data.url) {
         window.location.href = data.url;
       }
     } catch (error) {
       console.error("Error en checkout:", error);
+      alert("Hubo un problema al iniciar el pago. Por favor intenta nuevamente.");
     } finally {
       setLoading(false);
     }
