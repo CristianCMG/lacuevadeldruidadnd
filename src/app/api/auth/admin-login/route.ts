@@ -7,7 +7,10 @@ export async function POST(request: Request) {
 
     if (!validSecret) {
       console.error('ADMIN_SECRET is not defined in environment variables');
-      return NextResponse.json({ error: 'Server misconfiguration: ADMIN_SECRET not set' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Server misconfiguration: ADMIN_SECRET not set',
+        debug: { envVars: Object.keys(process.env).filter(k => !k.includes('KEY') && !k.includes('SECRET')) } 
+      }, { status: 500 });
     }
 
     // Compare trimmed strings to avoid whitespace issues
@@ -30,7 +33,13 @@ export async function POST(request: Request) {
       return response;
     }
 
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    return NextResponse.json({ 
+      error: `Invalid credentials. Expected length: ${expected.length}, Received length: ${received.length}`,
+      debug: {
+        expectedStart: expected.substring(0, 2) + '...',
+        receivedStart: received.substring(0, 2) + '...'
+      }
+    }, { status: 401 });
   } catch (error) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
