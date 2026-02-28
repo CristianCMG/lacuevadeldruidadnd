@@ -23,14 +23,40 @@ const DB_PATH = process.env.DATA_STORAGE_PATH
   ? path.join(process.env.DATA_STORAGE_PATH, 'orders.json')
   : path.join(process.cwd(), 'src/data/orders.json');
 
+// Ensure directory exists in production
+if (process.env.DATA_STORAGE_PATH && !fs.existsSync(process.env.DATA_STORAGE_PATH)) {
+  try {
+    fs.mkdirSync(process.env.DATA_STORAGE_PATH, { recursive: true });
+  } catch (error) {
+    console.error('Failed to create storage directory:', error);
+  }
+}
+
 // Initialize DB if not exists
-if (!fs.existsSync(DB_PATH)) {
-  fs.writeFileSync(DB_PATH, JSON.stringify([], null, 2));
+try {
+  if (!fs.existsSync(DB_PATH)) {
+    // If the directory doesn't exist (and mkdir failed or wasn't called), this might fail
+    const dir = path.dirname(DB_PATH);
+    if (!fs.existsSync(dir)) {
+       fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(DB_PATH, JSON.stringify([], null, 2));
+  }
+} catch (error) {
+  console.warn('Could not initialize DB file (this is expected during build time if env vars are missing):', error);
 }
 
 export const getOrders = (): Order[] => {
-  const data = fs.readFileSync(DB_PATH, 'utf-8');
-  return JSON.parse(data);
+  try {
+    if (!fs.existsSync(DB_PATH)) {
+      return [];
+    }
+    const data = fs.readFileSync(DB_PATH, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading orders DB:', error);
+    return [];
+  }
 };
 
 export const getOrderByCode = (code: string): Order | undefined => {
