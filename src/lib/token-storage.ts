@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs/promises';
 import path from 'path';
 import { ITokenStorage } from './interfaces';
 import { TokenData } from './types';
 import { SecurityUtils } from './security';
 
-const TOKENS_FILE = path.join(process.cwd(), 'src', 'data', 'tokens.json');
+const TOKENS_FILE = process.env.DATA_STORAGE_PATH 
+  ? path.join(process.env.DATA_STORAGE_PATH, 'tokens.json')
+  : path.join(process.cwd(), process.env.NODE_ENV === 'production' ? 'data' : 'src/data', 'tokens.json');
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || process.env.MELI_CLIENT_SECRET || 'fallback-secret-key-do-not-use-in-prod';
 
 export class TokenStorage implements ITokenStorage {
@@ -36,7 +39,7 @@ export class TokenStorage implements ITokenStorage {
         // Fallback: Try parsing as plain JSON (migration path)
         try {
           return JSON.parse(data) as TokenData;
-        } catch (jsonError) {
+        } catch {
           console.error('Error parsing tokens (decryption failed and not valid JSON):', e);
           return null;
         }

@@ -6,6 +6,18 @@ Esta guía es específica para el plan **Hostinger Business Web Hosting** (Compa
 
 Antes de subir los archivos, necesitamos preparar la aplicación en tu entorno local.
 
+### Opción A: Usar el script de empaquetado (Recomendado)
+
+Si estás en Windows, puedes usar el script automatizado que hemos creado:
+
+1.  **Ejecuta el comando**:
+    ```bash
+    npm run package:hostinger:build
+    ```
+    Esto compilará tu proyecto y creará un archivo `project_build.zip` en la carpeta raíz.
+
+### Opción B: Manualmente
+
 1.  **Asegúrate de tener el archivo `server.js`**:
     Ya tienes un archivo `server.js` en la raíz de la carpeta `web`. Este archivo actuará como el punto de entrada para Hostinger.
 
@@ -20,6 +32,7 @@ Antes de subir los archivos, necesitamos preparar la aplicación en tu entorno l
     Crea un archivo `.zip` que contenga **SOLO** los siguientes archivos y carpetas (dentro de `web`):
     -   Carpeta `.next` (con todo su contenido)
     -   Carpeta `public`
+    -   Carpeta `scripts`
     -   Archivo `package.json`
     -   Archivo `package-lock.json`
     -   Archivo `server.js`

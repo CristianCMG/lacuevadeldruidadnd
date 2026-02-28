@@ -19,7 +19,7 @@ export default function SecureViewer({ modelUrl }: SecureViewerProps) {
       className="relative w-full h-[400px] bg-black/20 rounded-lg overflow-hidden border border-primary/30"
       onContextMenu={(e) => e.preventDefault()} // Disable right-click
     >
-      {/* @ts-ignore - model-viewer is a web component */}
+      {/* @ts-expect-error - model-viewer is a web component */}
       <model-viewer
         ref={viewerRef}
         src={modelUrl}

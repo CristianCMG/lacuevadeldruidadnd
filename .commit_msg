@@ -1,0 +1,7 @@
+feat: Testing Infrastructure and Admin Dashboard
+
+- Refactored MeLi client for testability and DI
+- Implemented Admin Dashboard with API Tester and Test Runner
+- Added E2E tests with Playwright and Integration tests with Vitest/MSW
+- Secured token storage with encryption
+- Added CI/CD workflows

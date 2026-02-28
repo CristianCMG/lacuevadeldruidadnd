@@ -1,6 +1,7 @@
 
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import { getOrderByCode, updateOrder, Order } from './db';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { logger } from './logger';
 import crypto from 'crypto';
 

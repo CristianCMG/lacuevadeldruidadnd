@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ILogger } from './interfaces';
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';

@@ -17,6 +17,7 @@ export default function SystemLogsPage() {
 
   // Mock log generation
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const mockLogs: LogEntry[] = [
       { id: '1', timestamp: new Date().toISOString(), level: 'info', message: 'System startup complete', source: 'System' },
       { id: '2', timestamp: new Date(Date.now() - 10000).toISOString(), level: 'warn', message: 'High latency on MeLi API', source: 'Integration' },

@@ -26,7 +26,6 @@ $itemsToCopy = @(
     "package-lock.json",
     "next.config.ts",
     "tsconfig.json",
-    "tailwind.config.ts",
     "postcss.config.mjs",
     "eslint.config.mjs",
     "server.js",

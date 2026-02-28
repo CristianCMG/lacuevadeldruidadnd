@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import crypto from 'crypto';
 import { TokenData } from './types';
 import { ITokenStorage, IRateLimiter, ILogger, IMeliClient } from './interfaces';

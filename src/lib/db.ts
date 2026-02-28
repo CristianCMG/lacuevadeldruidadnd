@@ -21,7 +21,7 @@ export interface Order {
 
 const DB_PATH = process.env.DATA_STORAGE_PATH 
   ? path.join(process.env.DATA_STORAGE_PATH, 'orders.json')
-  : path.join(process.cwd(), 'src/data/orders.json');
+  : path.join(process.cwd(), process.env.NODE_ENV === 'production' ? 'data' : 'src/data', 'orders.json');
 
 // Ensure directory exists in production
 if (process.env.DATA_STORAGE_PATH && !fs.existsSync(process.env.DATA_STORAGE_PATH)) {

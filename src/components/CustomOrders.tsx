@@ -3,6 +3,7 @@
 import { Hammer, Upload, Sparkles, AlertCircle, CheckCircle, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const SecureViewer = dynamic(() => import("./SecureViewer"), { ssr: false });
 
@@ -34,7 +35,7 @@ export default function CustomOrders() {
       } else {
         setError(data.message || "Código inválido");
       }
-    } catch (err) {
+    } catch {
       setError("Error al validar código");
     }
   };
@@ -60,7 +61,7 @@ export default function CustomOrders() {
       } else {
         setError(data.error || "Error en la generación");
       }
-    } catch (err) {
+    } catch {
       setError("Fallo crítico en la forja");
     } finally {
       setLoading(false);
@@ -81,7 +82,7 @@ export default function CustomOrders() {
         setModelUrl(null); // Clear viewer
         setPrompt("");
       }
-    } catch (err) {
+    } catch {
       setError("Error al aprobar");
     }
   };
@@ -102,7 +103,7 @@ export default function CustomOrders() {
       } else {
         setError(data.error);
       }
-    } catch (err) {
+    } catch {
       setError("Error al solicitar reembolso");
     }
   };
@@ -120,7 +121,7 @@ export default function CustomOrders() {
               La Forja Arcana
             </h2>
             <p className="text-gray-400 text-lg">
-              Utiliza magia de invocación (IA) para crear miniaturas únicas. Ingresa tu código de "Pack de Forja" para comenzar.
+              Utiliza magia de invocación (IA) para crear miniaturas únicas. Ingresa tu código de &quot;Pack de Forja&quot; para comenzar.
             </p>
 
             {!isValidated ? (
@@ -231,9 +232,11 @@ export default function CustomOrders() {
           {/* Right Column: Visual */}
           <div className="w-full md:w-1/2 relative hidden md:block">
             <div className="absolute inset-0 bg-secondary blur-[100px] opacity-10 rounded-full" />
-            <img 
+            <Image 
               src="https://images.unsplash.com/photo-1626071485664-9d1073832c3f?q=80&w=2070&auto=format&fit=crop" 
               alt="3D Printing" 
+              width={800}
+              height={600}
               className="rounded-lg border border-border shadow-2xl relative z-10 transform -rotate-2 hover:rotate-0 transition-transform duration-500 grayscale hover:grayscale-0"
             />
           </div>

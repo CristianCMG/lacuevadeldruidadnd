@@ -3,12 +3,9 @@
 import { Activity, Server, Clock, ShieldCheck } from 'lucide-react';
 import StatusCard from '@/components/admin/StatusCard';
 import ServiceHealth from '@/components/admin/ServiceHealth';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function DashboardPage() {
-  const [config, setConfig] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     // Fetch config to verify admin access and get basic info
     // Ideally this would be a real health check endpoint
@@ -17,7 +14,6 @@ export default function DashboardPage() {
         // In a real implementation, we'd call /api/admin/health
         // For now, we simulate a load
         await new Promise(resolve => setTimeout(resolve, 800));
-        setLoading(false);
       } catch (e) {
         console.error(e);
       }

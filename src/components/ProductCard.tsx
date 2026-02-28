@@ -2,6 +2,7 @@
 
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/store/cart";
+import Image from "next/image";
 
 interface ProductCardProps {
   id: string;
@@ -28,10 +29,12 @@ export default function ProductCard({ id, title, price, image, description, tag,
             {tag}
           </span>
         )}
-        <img
+        <Image
           src={image}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
       </div>

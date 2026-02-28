@@ -1,10 +1,20 @@
 "use client";
 
 import ProductCard from "./ProductCard";
-import { useState } from "react";
+
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  description: string;
+  tag?: string;
+  pictures?: { url: string }[];
+  permalink?: string;
+}
 
 // Fallback products in case API fails or no token
-const defaultProducts = [
+const defaultProducts: Product[] = [
   {
     id: "1",
     title: "Kit de Mazmorra Inicial",
@@ -39,8 +49,7 @@ const defaultProducts = [
 ];
 
 export default function FeaturedProducts() {
-  const [products, setProducts] = useState<any[]>(defaultProducts);
-  const [loading, setLoading] = useState(false); // Set to true if implementing real fetch on mount
+  const products = defaultProducts;
 
   // NOTE: To enable real fetching, we would need to call an API route that calls getUserItems
   // For this MVP, we are keeping the static products but prepared the structure.

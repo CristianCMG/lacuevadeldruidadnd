@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     // Limit workers to avoid hitting process limits (120 max)
     cpus: 1,
     workerThreads: false,
-    optimizePackageImports: ['lucide-react', 'date-fns', 'framer-motion'],
+    optimizePackageImports: ['lucide-react', 'date-fns'],
   },
   images: {
     remotePatterns: [

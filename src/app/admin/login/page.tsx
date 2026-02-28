@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, Loader2 } from 'lucide-react';
 
@@ -10,7 +10,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     this.state = { hasError: false, error: '' };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError(error: Error) {
     return { hasError: true, error: error.toString() };
   }
 
@@ -21,7 +21,6 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     return this.props.children;
   }
 }
-import React from 'react';
 
 function LoginForm() {
   const [secret, setSecret] = useState('');
@@ -30,7 +29,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const verifySecret = async (secretValue: string) => {
+  const verifySecret = useCallback(async (secretValue: string) => {
     setLoading(true);
     try {
       const res = await fetch('/api/auth/admin-login', {
@@ -59,19 +58,20 @@ function LoginForm() {
         }
         setLoading(false);
       }
-    } catch (err) {
+    } catch {
       setError('Login failed. Check server logs.');
       setLoading(false);
     }
-  };
+  }, [router]);
 
   useEffect(() => {
     const secretParam = searchParams?.get('secret');
     if (secretParam) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSecret(secretParam);
       verifySecret(secretParam);
     }
-  }, [searchParams]);
+  }, [searchParams, verifySecret]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

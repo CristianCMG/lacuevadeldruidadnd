@@ -2,13 +2,17 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "vitest",
+    "test": "vitest run",
     "lint": "eslint",
-    "package:hostinger": "powershell -ExecutionPolicy Bypass -File scripts/package-for-hostinger.ps1"
+    "package:hostinger:source": "powershell -ExecutionPolicy Bypass -File scripts/package-for-hostinger.ps1",
+    "package:hostinger:build": "powershell -ExecutionPolicy Bypass -File scripts/package-build-for-hostinger.ps1"
   },
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
