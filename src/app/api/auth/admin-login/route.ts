@@ -5,7 +5,18 @@ export async function POST(request: Request) {
     const { secret } = await request.json();
     const validSecret = process.env.ADMIN_SECRET;
 
-    if (secret === validSecret) {
+    if (!validSecret) {
+      console.error('ADMIN_SECRET is not defined in environment variables');
+      return NextResponse.json({ error: 'Server misconfiguration: ADMIN_SECRET not set' }, { status: 500 });
+    }
+
+    // Compare trimmed strings to avoid whitespace issues
+    const received = secret.trim();
+    const expected = validSecret.trim();
+    
+    console.log(`[Auth Debug] Attempting login. Received length: ${received.length}, Expected length: ${expected.length}`);
+    
+    if (received === expected) {
       const response = NextResponse.json({ success: true });
       
       // Set a cookie that expires in 24 hours
