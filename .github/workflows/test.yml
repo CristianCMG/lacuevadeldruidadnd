@@ -38,6 +38,9 @@ jobs:
         CI: true
 
     - name: Run Performance Tests
-      run: npx tsx scripts/performance-test.ts
+      run: |
+        npm run start &
+        npx wait-on http://localhost:3000
+        npx tsx scripts/performance-test.ts
       env:
         BASE_URL: http://localhost:3000
