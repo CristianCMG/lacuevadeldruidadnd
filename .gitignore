@@ -7,6 +7,10 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
+# Playwright
+playwright-report/
+test-results/
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -89,6 +93,7 @@ src/data/orders.json
 
 # Next.js build output
 .next
+_next
 build
 out
 

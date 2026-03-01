@@ -8,10 +8,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run clean && next build",
-    "clean": "node -e \"const fs = require('fs'); if (fs.existsSync('.next')) fs.rmSync('.next', { recursive: true, force: true });\"",
-    "start": "next start",
+    "postbuild": "node scripts/sync-next-static.mjs",
+    "clean": "node -e \"const fs = require('fs'); if (fs.existsSync('.next')) fs.rmSync('.next', { recursive: true, force: true }); if (fs.existsSync('_next')) fs.rmSync('_next', { recursive: true, force: true });\"",
+    "start": "node server.js",
     "test": "vitest run",
+    "test:smoke": "playwright test -g @smoke --reporter=line",
     "lint": "eslint",
+    "check:build-artifacts": "node scripts/check-next-build-artifacts.mjs",
+    "check:static": "node scripts/check-next-static-asset.mjs",
     "package:hostinger:source": "powershell -ExecutionPolicy Bypass -File scripts/package-for-hostinger.ps1",
     "package:hostinger:build": "powershell -ExecutionPolicy Bypass -File scripts/package-build-for-hostinger.ps1"
   },

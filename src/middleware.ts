@@ -7,7 +7,12 @@ export function middleware(request: NextRequest) {
     const proto = request.headers.get('x-forwarded-proto');
     const host = request.headers.get('host');
 
-    if (proto === 'http') {
+    const isLocalHost =
+      host?.startsWith('localhost') ||
+      host?.startsWith('127.0.0.1') ||
+      host?.startsWith('0.0.0.0');
+
+    if (proto === 'http' && host && !isLocalHost) {
       return NextResponse.redirect(
         `https://${host}${request.nextUrl.pathname}${request.nextUrl.search}`,
         301

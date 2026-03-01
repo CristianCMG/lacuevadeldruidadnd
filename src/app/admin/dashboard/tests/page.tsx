@@ -50,7 +50,7 @@ export default function IntegrationTestsPage() {
         {results.length === 0 && !loading && (
           <div className="p-12 text-center text-gray-500">
             <Play className="h-12 w-12 mx-auto mb-4 opacity-20" />
-            <p>Click "Run All Tests" to start the suite.</p>
+            <p>Click &quot;Run All Tests&quot; to start the suite.</p>
           </div>
         )}
 

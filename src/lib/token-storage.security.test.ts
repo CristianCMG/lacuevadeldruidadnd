@@ -1,9 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { TokenStorage } from '../src/lib/token-storage';
-import { SecurityUtils } from '../src/lib/security';
+import { TokenStorage } from './token-storage';
+import { SecurityUtils } from './security';
 import fs from 'fs/promises';
 
-// Mock fs/promises explicitly
 vi.mock('fs/promises', () => ({
   default: {
     writeFile: vi.fn(),
@@ -33,11 +32,9 @@ describe('TokenStorage Security', () => {
     await tokenStorage.save(mockTokens);
 
     expect(fs.writeFile).toHaveBeenCalledTimes(1);
-    const [filePath, content] = vi.mocked(fs.writeFile).mock.calls[0];
-    
-    // Content should not contain the plain access token
+    const [, content] = vi.mocked(fs.writeFile).mock.calls[0];
+
     expect(content).not.toContain('access-123');
-    // Content should look like encrypted string (salt:iv:tag:ciphertext)
     expect(content).toMatch(/^[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+$/);
   });
 

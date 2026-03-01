@@ -29,27 +29,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'La orden no está activa' }, { status: 403 });
     }
 
-    // Call Replicate (Hunyuan3D-2)
-    // Using a generic image-to-3d model ID for now, replace with specific Hunyuan3D-2 ID when available publically or use 'tencent/hunyuan3d-2' if accessible
-    // Fallback to a known working public model if Hunyuan is restricted, but attempting requested model.
     const model = "tencent/hunyuan3d-2:latest"; 
     
-    // Note: Replicate API implementation specifics might vary based on the model's exact input schema.
-    // Assuming standard inputs for text/image to 3d.
-    const input: any = { prompt };
+    const input: { prompt?: string; image?: string } = {};
+    if (prompt) input.prompt = prompt;
     if (image) input.image = image;
 
     const output = await replicate.run(model, { input });
 
-    // Deduct credit
     order.credits -= 1;
     
-    // Save generation record
     const generation = {
       id: uuidv4(),
       prompt,
       imageUrl: image,
-      modelUrl: String(output), // Assuming output is the GLB URL
+      modelUrl: String(output),
       createdAt: new Date().toISOString(),
       status: 'PENDING' as const,
     };

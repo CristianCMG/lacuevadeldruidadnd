@@ -3,7 +3,7 @@ export interface ApiEndpoint {
   path: string;
   description: string;
   params?: Record<string, string>;
-  body?: Record<string, any>;
+  body?: Record<string, unknown>;
 }
 
 export const API_REGISTRY: ApiEndpoint[] = [

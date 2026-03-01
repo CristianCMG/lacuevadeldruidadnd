@@ -2,14 +2,12 @@ import { describe, it, expect, vi, beforeAll, afterAll, afterEach } from 'vitest
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { MeliClient } from './mercadolibre';
-import { TokenStorage } from './token-storage';
 import { RateLimiter } from './rate-limiter';
 import { Logger } from './logger';
+import { ITokenStorage } from './interfaces';
 import { TokenData } from './types';
 
-// Setup MSW Server
 const server = setupServer(
-  // Refresh Token Handler
   http.post('https://api.mercadolibre.com/oauth/token', async ({ request }) => {
     const url = new URL(request.url);
     const grantType = url.searchParams.get('grant_type');
@@ -32,7 +30,6 @@ const server = setupServer(
     return new HttpResponse(null, { status: 400 });
   }),
 
-  // User Items Search Handler
   http.get('https://api.mercadolibre.com/users/:userId/items/search', () => {
     return HttpResponse.json({
       paging: { total: 1, offset: 0, limit: 50 },
@@ -40,7 +37,6 @@ const server = setupServer(
     });
   }),
 
-  // Items Details Handler
   http.get('https://api.mercadolibre.com/items', ({ request }) => {
      const url = new URL(request.url);
      const ids = url.searchParams.get('ids');
@@ -56,7 +52,7 @@ const server = setupServer(
 
 describe('MeliClient Integration', () => {
   let meliClient: MeliClient;
-  let mockTokenStorage: TokenStorage;
+  let mockTokenStorage: ITokenStorage;
 
   beforeAll(() => server.listen());
   afterEach(() => {
@@ -76,11 +72,10 @@ describe('MeliClient Integration', () => {
     mockTokenStorage = {
       save: vi.fn(),
       get: vi.fn(),
-    } as any;
+    };
 
-    const rateLimiter = new RateLimiter({ maxRetries: 3, baseDelay: 10 }); // Fast retries for tests
+    const rateLimiter = new RateLimiter({ maxRetries: 3, baseDelay: 10 });
     const logger = new Logger();
-    // Silence logger for tests
     vi.spyOn(logger, 'info').mockImplementation(() => {});
     vi.spyOn(logger, 'warn').mockImplementation(() => {});
     vi.spyOn(logger, 'error').mockImplementation(() => {});
@@ -96,7 +91,7 @@ describe('MeliClient Integration', () => {
       expires_in: 3600,
       scope: 'read',
       token_type: 'bearer',
-      created_at: Date.now() - (3600 * 1000) - 1000, // Expired
+      created_at: Date.now() - (3600 * 1000) - 1000,
     };
 
     vi.mocked(mockTokenStorage.get).mockResolvedValue(expiredToken);
@@ -139,7 +134,7 @@ describe('MeliClient Integration', () => {
     const items = await meliClient.getUserItems();
     
     expect(items).toEqual([]);
-    expect(callCount).toBe(3); // 2 failures + 1 success
+    expect(callCount).toBe(3);
   });
 
   it('should handle 500 errors gracefully', async () => {
@@ -161,6 +156,6 @@ describe('MeliClient Integration', () => {
     );
 
     const items = await meliClient.getUserItems();
-    expect(items).toEqual([]); // getUserItems catches errors and returns empty array
+    expect(items).toEqual([]);
   });
 });

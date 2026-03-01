@@ -3,12 +3,10 @@ import { validateSignature, processWebhook } from './webhook-processor';
 import * as db from './db';
 import crypto from 'crypto';
 
-// Hoist the mock function so it's available in the factory
 const { mockGet } = vi.hoisted(() => {
   return { mockGet: vi.fn() };
 });
 
-// Mock dependencies
 vi.mock('mercadopago', () => {
   return {
     MercadoPagoConfig: class {},
@@ -72,13 +70,13 @@ describe('Webhook Processor', () => {
 
     it('should fail if parts are missing', () => {
       const body = { resource: '/orders/123', topic: 'orders' };
-      const signature = `v1=some_signature`; // Missing ts
+      const signature = `v1=some_signature`;
 
       expect(validateSignature(signature, body)).toBe(false);
     });
 
     it('should fail if body is missing resource or topic', () => {
-      const body = {}; // Missing resource and topic
+      const body = {};
       const ts = Date.now().toString();
       const manifest = `id:undefined;topic:undefined;ts:${ts}`;
       const hmac = crypto.createHmac('sha256', SECRET);
@@ -99,7 +97,7 @@ describe('Webhook Processor', () => {
         id: paymentId,
         external_reference: orderCode,
         status: 'approved',
-      } as any);
+      });
 
       vi.mocked(db.getOrderByCode).mockReturnValue({
         code: orderCode,
@@ -108,7 +106,7 @@ describe('Webhook Processor', () => {
         generations: [],
         purchaseDate: '',
         credits: 0
-      } as any);
+      });
 
       vi.mocked(db.updateOrder).mockReturnValue(true);
 
@@ -131,7 +129,7 @@ describe('Webhook Processor', () => {
         id: paymentId,
         external_reference: orderCode,
         status: 'refunded',
-      } as any);
+      });
 
       vi.mocked(db.getOrderByCode).mockReturnValue({
         code: orderCode,
@@ -140,7 +138,7 @@ describe('Webhook Processor', () => {
         generations: [],
         purchaseDate: '',
         credits: 0
-      } as any);
+      });
 
       vi.mocked(db.updateOrder).mockReturnValue(true);
 
@@ -159,7 +157,7 @@ describe('Webhook Processor', () => {
     });
 
     it('should handle payment not found', async () => {
-      mockGet.mockResolvedValue(null as any);
+      mockGet.mockResolvedValue(null);
 
       await processWebhook('payment', '999');
 
@@ -171,7 +169,7 @@ describe('Webhook Processor', () => {
         id: '123',
         external_reference: 'NON_EXISTENT',
         status: 'approved',
-      } as any);
+      });
 
       vi.mocked(db.getOrderByCode).mockReturnValue(undefined);
 

@@ -2,26 +2,23 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import axios from 'axios';
 import { RateLimiter } from './rate-limiter';
 
-// Mock axios
 vi.mock('axios');
 
 describe('RateLimiter', () => {
   let rateLimiter: RateLimiter;
-  const mockAxios = {
+  const mockAxios: { request: ReturnType<typeof vi.fn> } = {
     request: vi.fn(),
   };
 
   beforeEach(() => {
-    // Reset mocks
     vi.clearAllMocks();
     
-    // Setup axios mock
-    (axios.create as any).mockReturnValue(mockAxios);
-    (axios.isAxiosError as any).mockReturnValue(true);
+    vi.mocked(axios.create).mockReturnValue(mockAxios as unknown as ReturnType<typeof axios.create>);
+    vi.mocked(axios.isAxiosError).mockReturnValue(true);
 
     rateLimiter = new RateLimiter({
       maxRetries: 3,
-      baseDelay: 10, // Short delay for tests
+      baseDelay: 10,
     });
   });
 
@@ -44,7 +41,6 @@ describe('RateLimiter', () => {
     };
     const successResponse = { data: 'success', status: 200 };
 
-    // Fail twice, then succeed
     mockAxios.request
       .mockRejectedValueOnce(error429)
       .mockRejectedValueOnce(error429)
@@ -61,7 +57,7 @@ describe('RateLimiter', () => {
       response: {
         status: 429,
         headers: {
-          'retry-after': '1', // 1 second
+          'retry-after': '1',
         },
       },
     };
@@ -75,14 +71,7 @@ describe('RateLimiter', () => {
     await rateLimiter.request({ url: '/test' });
     const endTime = Date.now();
 
-    // Should have waited at least 1000ms (minus some buffer for execution time, plus jitter)
-    // We mocked baseDelay to 10ms, but retry-after should override it to 1000ms.
-    // However, validating exact timing in unit tests can be flaky.
-    // We can spy on setTimeout or just trust the logic.
-    // Given the implementation: delay = seconds * 1000;
-    
     expect(mockAxios.request).toHaveBeenCalledTimes(2);
-    // Rough check if it took longer than the base delay would suggest
     expect(endTime - startTime).toBeGreaterThan(900); 
   });
 
@@ -98,7 +87,7 @@ describe('RateLimiter', () => {
     mockAxios.request.mockRejectedValue(error429);
 
     await expect(rateLimiter.request({ url: '/test' })).rejects.toEqual(error429);
-    expect(mockAxios.request).toHaveBeenCalledTimes(4); // Initial + 3 retries
+    expect(mockAxios.request).toHaveBeenCalledTimes(4);
   });
 
   it('should throw immediately for non-429 errors', async () => {

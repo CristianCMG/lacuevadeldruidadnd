@@ -3,29 +3,36 @@ import { createOrder, Order } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { v4 as uuidv4 } from 'uuid';
 
-// Using a test access token if the environment variable is not set
-// In production, this MUST be set in environment variables
 const accessToken = process.env.MP_ACCESS_TOKEN || "TEST-00000000-0000-0000-0000-000000000000";
 
 const client = new MercadoPagoConfig({ accessToken });
 
+type CheckoutItem = {
+  id: string;
+  title: string;
+  quantity: number;
+  price: number | string;
+  image?: string;
+};
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { items } = body;
+    const body = (await request.json()) as { items?: unknown };
+    const items = body.items;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       logger.warn('Checkout attempt with no items');
       return Response.json({ error: 'No items provided' }, { status: 400 });
     }
 
+    const checkoutItems = items as CheckoutItem[];
     const orderId = uuidv4();
     const newOrder: Order = {
       code: orderId,
       purchaseDate: new Date().toISOString(),
-      credits: 0, // TODO: Calculate credits based on items if applicable
+      credits: 0,
       status: 'PENDING',
-      paymentId: '', // Will be updated via webhook
+      paymentId: '',
       generations: [],
     };
 
@@ -42,7 +49,7 @@ export async function POST(request: Request) {
     const result = await preference.create({
       body: {
         external_reference: orderId,
-        items: items.map((item: any) => ({
+        items: checkoutItems.map((item) => ({
           id: item.id,
           title: item.title,
           quantity: item.quantity,
